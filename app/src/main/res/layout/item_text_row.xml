@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/item_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:id="@+id/item_tv_text_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/item_tv_edited_time"
+        app:layout_constraintStart_toEndOf="@id/item_checkbox"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/text_header" />
+
+    <TextView
+        android:id="@+id/item_tv_edited_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_checkbox"
+        app:layout_constraintEnd_toStartOf="@id/item_tv_contents"
+        app:layout_constraintTop_toBottomOf="@id/item_tv_text_header"
+        android:textAlignment="center"
+        tools:text="오전 10:43" />
+
+    <TextView
+        android:id="@+id/item_tv_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_more_text"
+        android:textColor="@color/lightGrey"
+        android:textSize="12sp"
+        app:layout_constrainedWidth="true"
+        android:layout_marginLeft="10dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_tv_edited_time"
+        app:layout_constraintTop_toBottomOf="@id/item_tv_text_header" />
+
+
+</android.support.constraint.ConstraintLayout>
