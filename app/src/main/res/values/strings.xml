@@ -2,4 +2,5 @@
     <string name="app_name">MemoDemo</string>
     <string name="text_header">제목예제</string>
     <string name="no_more_text">추가 텍스트 없음</string>
+    <string name="all_memo">전체메모</string>
 </resources>

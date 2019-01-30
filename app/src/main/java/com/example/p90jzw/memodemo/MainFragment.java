@@ -11,16 +11,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment implements MainContract.View {
 
     @BindView(R.id.rc_main_list)
     RecyclerView mRecyclerView;
+    MainAdapter mAdapter;
+
+    public static MainFragment newInstance() {
+        return new MainFragment();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        mAdapter = new MainAdapter(getActivity());
+        mRecyclerView.hasFixedSize();
+        mRecyclerView.setAdapter(mAdapter);
+
         return view;
     }
 

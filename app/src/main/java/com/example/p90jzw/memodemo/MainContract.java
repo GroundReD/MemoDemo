@@ -7,6 +7,6 @@ public interface MainContract {
     }
 
     interface Presenter {
-
+        public void setView();
     }
 }

@@ -6,6 +6,8 @@
     <color name="black">#000000</color>
     <color name="lightGrey">#757575</color>
     <color name="grey">#616161</color>
-
+    <color name="lightBluePrimary">#b3e5fc</color>
+    <color name="lightBlue">#e6ffff</color>
+    <color name="lightBlueDark">#82b3c9</color>
 
 </resources>
