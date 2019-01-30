@@ -1,8 +1,7 @@
 package com.example.p90jzw.memodemo.holder;
 
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -22,8 +21,6 @@ public class MainContentViewHolder extends RecyclerView.ViewHolder {
     TextView textEditTime;
     @BindView(R.id.item_tv_contents)
     TextView textContent;
-    @BindView(R.id.item_cl_all)
-    ConstraintLayout constraintLayout;
 
     public MainContentViewHolder(@NonNull View itemView) {
         super(itemView);

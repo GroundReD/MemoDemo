@@ -38,7 +38,7 @@ public class MemoData extends RealmObject {
         this.header = header;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setText(String text) {
+        this.text = text;
     }
 }
