@@ -1,7 +1,6 @@
 package com.example.p90jzw.memodemo.data;
 
-import java.util.Date;
-
+import androidx.annotation.NonNull;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,9 +11,9 @@ public class MemoData extends RealmObject {
 
     private String header;
     private String text;
-    private Date editedTime;
+    private String editedTime;
 
-    public Date getEditedTime() {
+    public String getEditedTime() {
         return editedTime;
     }
 
@@ -30,7 +29,7 @@ public class MemoData extends RealmObject {
         return header;
     }
 
-    public void setEditedTime(Date editedTime) {
+    public void setEditedTime(String editedTime) {
         this.editedTime = editedTime;
     }
 
@@ -38,7 +37,21 @@ public class MemoData extends RealmObject {
         this.header = header;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getAllText() {
+        return header + "\n" + text;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

@@ -29,7 +29,7 @@ public class MainContentViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(MemoData memoData) {
         textTitle.setText(memoData.getHeader());
-        textEditTime.setText(memoData.getEditedTime().toString());
+        textEditTime.setText(memoData.getEditedTime());
         textContent.setText(memoData.getText());
     }
 }
