@@ -9,6 +9,8 @@ public class MemoData extends RealmObject {
     @PrimaryKey
     private int index;
 
+    private boolean checked = false;
+    private boolean starred = false;
     private String header;
     private String text;
     private String editedTime;
@@ -47,6 +49,14 @@ public class MemoData extends RealmObject {
 
     public String getAllText() {
         return header + "\n" + text;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public boolean isChecked() {
+        return checked;
     }
 
     @NonNull

@@ -1,7 +1,5 @@
 package com.example.p90jzw.memodemo.holder;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -9,6 +7,8 @@ import android.widget.TextView;
 import com.example.p90jzw.memodemo.R;
 import com.example.p90jzw.memodemo.data.MemoData;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

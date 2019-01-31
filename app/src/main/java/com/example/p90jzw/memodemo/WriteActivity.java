@@ -1,14 +1,5 @@
 package com.example.p90jzw.memodemo;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
-
-import android.app.Application;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +8,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.p90jzw.memodemo.data.MemoData;
 
 import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class WriteActivity extends AppCompatActivity {
 
@@ -58,6 +55,10 @@ public class WriteActivity extends AppCompatActivity {
         //get Realm instance
         realm = Realm.getDefaultInstance();
 
+        // two intent
+        // - crate new memo
+        // - edit existed memo
+
         edittedDate = saveEdditedDate();
     }
 
@@ -89,7 +90,7 @@ public class WriteActivity extends AppCompatActivity {
         memoData.setIndex(currentIndex);
         memoData.setEditedTime(edittedDate);
 
-        if (memo != null ) {
+        if (memo != null) {
             String header = memo.substring(0, memo.indexOf("\n"));
             String text = memo.substring(memo.indexOf("\n"));
             memoData.setHeader(header);
@@ -117,8 +118,7 @@ public class WriteActivity extends AppCompatActivity {
 
         if (currentIndex == null) {
             nextIndex = 0;
-        }
-        else {
+        } else {
             nextIndex = currentIndex.intValue() + 1;
         }
         return nextIndex;
@@ -126,9 +126,9 @@ public class WriteActivity extends AppCompatActivity {
 
     @OnClick(R.id.write_iv_delete)
     void remove() {
-        RealmResults<MemoData> results = realm.where(MemoData.class).equalTo("index",currentIndex).findAll();
+        RealmResults<MemoData> results = realm.where(MemoData.class).equalTo("index", currentIndex).findAll();
 
-        if(results.isEmpty()) {
+        if (results.isEmpty()) {
             return;
         }
         realm.beginTransaction();

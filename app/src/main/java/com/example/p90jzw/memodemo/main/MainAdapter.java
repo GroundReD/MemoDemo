@@ -21,14 +21,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
     private Context mContext;
     private List<MemoData> memoDataList;
 
-    public MainAdapter(Context mContext){
+    public MainAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
     public void setMemoItemList(List<MemoData> memoItems) {
         memoDataList = memoItems;
     }
-
 
 
     @NonNull
@@ -47,7 +46,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
 
     @Override
     public int getItemCount() {
-        return memoDataList != null ? memoDataList.size() :0;
+        return memoDataList != null ? memoDataList.size() : 0;
 
     }
 }
