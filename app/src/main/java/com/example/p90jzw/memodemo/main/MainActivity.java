@@ -1,10 +1,12 @@
 package com.example.p90jzw.memodemo.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.p90jzw.memodemo.R;
+import com.example.p90jzw.memodemo.WriteActivity;
 import com.example.p90jzw.memodemo.data.MemoData;
 
 import java.util.ArrayList;
@@ -15,13 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.realm.Realm;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     @BindView(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
 
     MainAdapter mAdapter;
+    MainPresenter mainPresenter;
 
     ArrayList<MemoData> memoDataList;
 
@@ -33,33 +38,29 @@ public class MainActivity extends AppCompatActivity {
 
         // tool bar
         Toolbar toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
 
 
         memoDataList = new ArrayList<>();
 
-        MemoData m = new MemoData();
-        m.setIndex(1);
-        m.setEditedTime("2019-01-29");
-        m.setHeader("asdfsafd");
-        m.setText("asdfjsdaf");
-
-        memoDataList.add(m);
-        m.setIndex(2);
-        memoDataList.add(m);
-        m.setIndex(3);
-        memoDataList.add(m);
-        m.setIndex(4);
-        memoDataList.add(m);
-        m.setIndex(5);
+//        MemoData m = new MemoData();
+//        m.setIndex(0);
+//        m.setEditedTime("2019-01-29");
+//        m.setHeader("asdfsafd");
+//        m.setText("asdfjsdaf");
+//
+//        memoDataList.add(m);
 
         mAdapter = new MainAdapter(this);
-        mAdapter.setMemoItemList(memoDataList);
+        mAdapter.addMemo(memoDataList);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mRecyclerView.hasFixedSize();
         mRecyclerView.setAdapter(mAdapter);
+
+        mainPresenter = new MainPresenter();
+        mainPresenter.attachView(this);
+        mainPresenter.setMainAdapterModel(mAdapter);
+        mainPresenter.setMainAdapterView(mAdapter);
 
 
     }
@@ -76,5 +77,23 @@ public class MainActivity extends AppCompatActivity {
             case R.id.edit_memo:
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Realm realm;
+    }
+
+    @Override
+    public void showMemo(int memoIndex) {
+        Intent intent = new Intent(this, WriteActivity.class);
+        intent.putExtra("MEMO_INDEX", memoIndex);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.main_iv_write_new)
+    void crateNewMemo() {
+        showMemo(-1);
     }
 }

@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import com.example.p90jzw.memodemo.R;
 import com.example.p90jzw.memodemo.data.MemoData;
 import com.example.p90jzw.memodemo.holder.MainContentViewHolder;
+import com.example.p90jzw.memodemo.listener.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,27 +22,23 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
 
     private Context mContext;
     private List<MemoData> memoDataList;
+    private OnItemClickListener onItemClickListener;
 
     public MainAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setMemoItemList(List<MemoData> memoItems) {
-        memoDataList = memoItems;
-    }
-
-
     @NonNull
     @Override
     public MainContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_row, parent, false);
-        return new MainContentViewHolder(view);
+        return new MainContentViewHolder(view, mContext, onItemClickListener);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainContentViewHolder holder, int position) {
-        holder.bind(memoDataList.get(position));
+        holder.bind(memoDataList.get(position), position);
     }
 
 
@@ -48,5 +46,30 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
     public int getItemCount() {
         return memoDataList != null ? memoDataList.size() : 0;
 
+    }
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.onItemClickListener = clickListener;
+    }
+
+    @Override
+    public void notifyAdapter() {
+
+    }
+
+    @Override
+    public void addMemo(ArrayList<MemoData> memoDataItems) {
+        memoDataList = memoDataItems;
+    }
+
+    @Override
+    public void clearItem() {
+
+    }
+
+    @Override
+    public MemoData getItem(int position) {
+        return memoDataList.get(position);
     }
 }

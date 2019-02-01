@@ -1,12 +1,22 @@
 package com.example.p90jzw.memodemo.main;
 
+import android.content.Context;
+
 public interface MainContract {
 
     interface View {
-        void setPresenter(Presenter presenter);
+        void showMemo(int memoIndex);
     }
 
     interface Presenter {
-        public void setView();
+        void attachView(View view);
+
+        void detachView();
+
+        void loadItems(Context context);
+
+        void setMainAdapterModel(MainAdapterContract.Model adapterModel);
+
+        void setMainAdapterView(MainAdapterContract.View adapterView);
     }
 }
