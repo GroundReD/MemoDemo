@@ -1,4 +1,4 @@
-package com.example.p90jzw.memodemo;
+package com.example.p90jzw.memodemo.write;
 
 import com.example.p90jzw.memodemo.data.MemoData;
 

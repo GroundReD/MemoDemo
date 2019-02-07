@@ -4,11 +4,21 @@
     <item android:id="@+id/search_memo"
         android:title="search"
         android:icon="@drawable/magnifier"
+        android:orderInCategory="1"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/edit_memo"
         android:title="@string/edit"
-        app:showAsAction="ifRoom"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+
+    <item
+        android:id="@+id/delete_memo"
+        android:title="@string/delete"
+        android:orderInCategory="3"
+        android:visible="false"
+        app:showAsAction="ifRoom|collapseActionView"
         />
 </menu>

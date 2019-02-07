@@ -1,4 +1,4 @@
-package com.example.p90jzw.memodemo;
+package com.example.p90jzw.memodemo.write;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.p90jzw.memodemo.DataUtils;
+import com.example.p90jzw.memodemo.R;
 import com.example.p90jzw.memodemo.data.MemoData;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,6 +73,7 @@ public class WriteActivity extends AppCompatActivity implements WriteContract.Vi
     private void initView() {
         setMemoData();
         memo.setText(writeMemoData.getHeader() != null ? writeMemoData.getAllText() : "");
+        memo.setSelection(memo.length());
         date.setText(writeMemoData.getEditedTime());
 
     }
@@ -97,8 +100,11 @@ public class WriteActivity extends AppCompatActivity implements WriteContract.Vi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        saveMemo();
-        Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+        String text = String.valueOf(memo.getText());
+        if( !text.isEmpty() || !text.equals("")) {
+            saveMemo();
+            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
 
         // back button 클릭 시 저장 + activity pop
         // save button 클릭 시 저장만

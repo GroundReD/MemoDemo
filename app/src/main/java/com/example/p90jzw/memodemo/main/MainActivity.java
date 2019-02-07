@@ -1,13 +1,14 @@
 package com.example.p90jzw.memodemo.main;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.p90jzw.memodemo.R;
-import com.example.p90jzw.memodemo.WriteActivity;
+import com.example.p90jzw.memodemo.write.WriteActivity;
 import com.example.p90jzw.memodemo.data.MemoData;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
+    public final static boolean DELETE = true;
+    public final static boolean EDIT = false;
+
     @BindView(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.main_tv_number_of_memo)
@@ -29,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private MainAdapter mAdapter;
     private MainPresenter mainPresenter;
-
-    private ArrayList<MemoData> memoDataList;
+    private boolean mode;
+    private boolean showCheckBox = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             getSupportActionBar().setTitle(R.string.all_memo);
         }
 
-
-        memoDataList = new ArrayList<>();
 
 //        MemoData m = new MemoData();
 //        m.setIndex(0);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onResume() {
         super.onResume();
-        mainPresenter.loadItems(this);
+        mainPresenter.loadItems();
     }
 
     @Override
@@ -82,10 +84,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        invalidateOptionsMenu();
+        if(mode == DELETE) {
+            menu.findItem(R.id.delete_memo).setVisible(true);
+            menu.findItem(R.id.edit_memo).setVisible(false);
+        } else {
+            menu.findItem(R.id.delete_memo).setVisible(false);
+            menu.findItem(R.id.edit_memo).setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_memo:
-                mainPresenter.showItemCheckBox(this);
+                mainPresenter.showItemCheckBox(showCheckBox);
+                showCheckBox = !showCheckBox;
+                mode = DELETE;
+                return true;
+            case R.id.delete_memo:
+                mainPresenter.showItemCheckBox(showCheckBox);
+                showCheckBox = !showCheckBox;
+                mode = EDIT;
                 return true;
             case R.id.search_memo:
         }

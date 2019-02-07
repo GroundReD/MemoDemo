@@ -7,4 +7,5 @@
     <string name="edit">편집</string>
     <string name="write_memo">메모를 입력해주세요</string>
     <string name="num_of_memo">%1$d개의 메모</string>
+    <string name="delete">삭제</string>
 </resources>

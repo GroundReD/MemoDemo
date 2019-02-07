@@ -32,7 +32,7 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
 
 
     @Override
-    public void loadItems(Context context) {
+    public void loadItems() {
         ArrayList<MemoData> memoDataList = new ArrayList<>();
         try {
             RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
@@ -48,18 +48,18 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
     }
 
     @Override
-    public void showItemCheckBox(Context context) {
+    public void showItemCheckBox(boolean showCheckBox) {
         ArrayList<MemoData> memoDataList = new ArrayList<>();
         try {
-            realm.beginTransaction();
             RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
-            for (MemoData memo : results) {
-                memo.setShowCheckBox(!memo.getShowCheckBox());
-            }
-            realm.commitTransaction();
             memoDataList.addAll(realm.copyFromRealm(results));
+
         } catch (Exception e) {
             Log.e("show check box item", e.getMessage());
+        }
+
+        for (MemoData memoData : memoDataList) {
+            memoData.setShowCheckBox(showCheckBox);
         }
 
         adapterModel.updateMemo(memoDataList);

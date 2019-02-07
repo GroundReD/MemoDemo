@@ -15,9 +15,9 @@ public interface MainContract {
 
         void detachView();
 
-        void loadItems(Context context);
+        void loadItems();
 
-        void showItemCheckBox(Context context);
+        void showItemCheckBox(boolean showCheckbox);
 
         void deleteCheckedItem(Context context);
 

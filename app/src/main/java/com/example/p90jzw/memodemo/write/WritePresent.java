@@ -1,6 +1,4 @@
-package com.example.p90jzw.memodemo;
-
-import android.util.Log;
+package com.example.p90jzw.memodemo.write;
 
 import com.example.p90jzw.memodemo.data.MemoData;
 
