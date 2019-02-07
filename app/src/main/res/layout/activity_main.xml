@@ -11,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/lightBlueOp80"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ToolbarTheme"
+        app:titleTextColor="@color/lightBluePrimary"
+        app:popupTheme="@style/ToolbarTheme"
         tools:ignore="MissingConstraints">
 
     </androidx.appcompat.widget.Toolbar>
@@ -29,46 +30,50 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_footer"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:id="@+id/main_footer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:background="@color/lightBlueOp80"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_recycler_view"
         tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/main_iv_grid"
             android:layout_width="40dp"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/main_tv_number_of_memo"
-            android:src="@drawable/iconmonstr_view_6_240"/>
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/main_tv_number_of_memo"
             android:layout_width="wrap_content"
-            android:textSize="12sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/main_iv_grid"
             app:layout_constraintEnd_toStartOf="@id/main_iv_write_new"
-            tools:text="4개의 메모"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toEndOf="@id/main_iv_grid"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4개의 메모" />
+
         <ImageView
             android:id="@+id/main_iv_write_new"
             android:layout_width="40dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="40dp"
+            android:src="@drawable/pencil"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/iconmonstr_pencil_15_240"
             app:layout_constraintStart_toEndOf="@id/main_tv_number_of_memo"
-            android:layout_height="40dp" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

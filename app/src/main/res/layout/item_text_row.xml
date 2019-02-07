@@ -5,14 +5,17 @@
     android:id="@+id/item_cl_all"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-   >
+    android:paddingEnd="10dp">
 
     <CheckBox
         android:id="@+id/item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:visibility="gone"
+        android:layout_marginStart="10dp"
+        android:paddingEnd="10dp"
+        android:visibility="visible"
+        android:button="@null"
+        android:background="@drawable/custom_check_box"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,28 +24,31 @@
         android:id="@+id/item_tv_text_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:ellipsize="end"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/item_tv_edited_time"
         app:layout_constraintStart_toEndOf="@id/item_checkbox"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginLeft="10dp"
         app:layout_constraintVertical_chainStyle="spread"
+        app:layout_goneMarginLeft="12dp"
         tools:text="@string/text_header" />
 
     <TextView
         android:id="@+id/item_tv_edited_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
         android:textAlignment="center"
         android:textColor="@color/grey"
-        android:textSize="14sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_tv_contents"
         app:layout_constraintStart_toEndOf="@id/item_checkbox"
         app:layout_constraintTop_toBottomOf="@id/item_tv_text_header"
-        app:layout_goneMarginLeft="10dp"
+        app:layout_goneMarginLeft="12dp"
         tools:text="오전 10:43" />
 
     <TextView
@@ -50,29 +56,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/no_more_text"
-        app:layout_constraintBaseline_toBaselineOf="@id/item_tv_edited_time"
         android:textAlignment="center"
         android:textColor="@color/lightGrey"
-        android:textSize="14sp"
+        android:textSize="15sp"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBaseline_toBaselineOf="@id/item_tv_edited_time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_tv_edited_time"
         app:layout_constraintTop_toBottomOf="@id/item_tv_text_header" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_iv_star"/>
-
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/lightGrey"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/blueGrey"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_checkbox"
+        app:layout_goneMarginLeft="10dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@ public interface MainAdapterContract {
     }
 
     interface Model {
-        void addMemo(ArrayList<MemoData> memoDataItems);
+        void updateMemo(ArrayList<MemoData> memoDataItems);
 
         void clearItem();
 

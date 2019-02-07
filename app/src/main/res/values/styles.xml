@@ -3,19 +3,22 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/lightBlueOp80</item>
-        <item name="colorPrimaryDark">@color/lightBlueOp80</item>
+        <item name="colorPrimary">@color/lightBluePrimary</item>
+        <item name="colorPrimaryDark">@color/lightBlueDark</item>
         <item name="colorAccent">@color/lightBlueDark</item>
+        <item name="android:statusBarColor">@color/lightBlueOp80</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:actionMenuTextColor">@color/lightBluePrimary</item>
         <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
         <item name="actionButtonStyle">@style/myActionButtonStyle</item>
     </style>
     <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">24dp</item>
-        <item name="android:maxWidth">40dp</item>
-        <item name="android:width">40dp</item>
+        <item name="android:maxWidth">60dp</item>
+        <item name="android:width">60dp</item>
     </style>
 </resources>

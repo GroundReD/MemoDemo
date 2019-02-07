@@ -1,30 +1,77 @@
 package com.example.p90jzw.memodemo.main;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.p90jzw.memodemo.data.MemoData;
 import com.example.p90jzw.memodemo.listener.OnItemClickListener;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainPresenter implements MainContract.Presenter, OnItemClickListener {
 
     private MainContract.View view;
     private MainAdapterContract.View adapterView;
     private MainAdapterContract.Model adapterModel;
+    Realm realm;
 
     @Override
     public void attachView(MainContract.View view) {
         this.view = view;
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public void detachView() {
         view = null;
+        realm.close();
     }
+
 
     @Override
     public void loadItems(Context context) {
+        ArrayList<MemoData> memoDataList = new ArrayList<>();
+        try {
+            RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
+            memoDataList.addAll(realm.copyFromRealm(results));
+        } catch (Exception e) {
+            Log.e("load item", e.getMessage());
+        }
+
+        adapterModel.updateMemo(memoDataList);
+        adapterView.notifyAdapter();
+        view.showItemCount(memoDataList.size());
 
     }
+
+    @Override
+    public void showItemCheckBox(Context context) {
+        ArrayList<MemoData> memoDataList = new ArrayList<>();
+        try {
+            realm.beginTransaction();
+            RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
+            for (MemoData memo : results) {
+                memo.setShowCheckBox(!memo.getShowCheckBox());
+            }
+            realm.commitTransaction();
+            memoDataList.addAll(realm.copyFromRealm(results));
+        } catch (Exception e) {
+            Log.e("show check box item", e.getMessage());
+        }
+
+        adapterModel.updateMemo(memoDataList);
+        adapterView.notifyAdapter();
+
+    }
+
+    @Override
+    public void deleteCheckedItem(Context context) {
+
+    }
+
 
     @Override
     public void setMainAdapterModel(MainAdapterContract.Model adapterModel) {

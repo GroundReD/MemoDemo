@@ -44,7 +44,14 @@ public class MainContentViewHolder extends RecyclerView.ViewHolder {
             onItemClickListener.onItemClick(position);
         });
         textTitle.setText(memoData.getHeader());
-        textEditTime.setText(memoData.getEditedTime());
+        textEditTime.setText(memoData.getEditedTimePreview());
         textContent.setText(memoData.getText());
+
+        if(memoData.getShowCheckBox()) {
+            checkBox.setVisibility(View.VISIBLE);
+        } else {
+            checkBox.setVisibility(View.GONE);
+        }
+
     }
 }

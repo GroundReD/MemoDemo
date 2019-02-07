@@ -55,11 +55,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
 
     @Override
     public void notifyAdapter() {
-
+        notifyDataSetChanged();
     }
 
     @Override
-    public void addMemo(ArrayList<MemoData> memoDataItems) {
+    public void updateMemo(ArrayList<MemoData> memoDataItems) {
         memoDataList = memoDataItems;
     }
 

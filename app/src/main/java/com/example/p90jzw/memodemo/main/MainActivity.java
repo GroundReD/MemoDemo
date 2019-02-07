@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.p90jzw.memodemo.R;
 import com.example.p90jzw.memodemo.WriteActivity;
@@ -18,17 +19,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     @BindView(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.main_tv_number_of_memo)
+    TextView memoCountView;
 
-    MainAdapter mAdapter;
-    MainPresenter mainPresenter;
 
-    ArrayList<MemoData> memoDataList;
+    private MainAdapter mAdapter;
+    private MainPresenter mainPresenter;
+
+    private ArrayList<MemoData> memoDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         // tool bar
         Toolbar toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.all_memo);
+        }
 
 
         memoDataList = new ArrayList<>();
@@ -51,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 //        memoDataList.add(m);
 
         mAdapter = new MainAdapter(this);
-        mAdapter.addMemo(memoDataList);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.hasFixedSize();
@@ -61,8 +67,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mainPresenter.attachView(this);
         mainPresenter.setMainAdapterModel(mAdapter);
         mainPresenter.setMainAdapterView(mAdapter);
+//        mainPresenter.loadItems(this);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainPresenter.loadItems(this);
     }
 
     @Override
@@ -75,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_memo:
+                mainPresenter.showItemCheckBox(this);
+                return true;
+            case R.id.search_memo:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -82,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Realm realm;
+        mainPresenter.detachView();
     }
 
     @Override
@@ -90,10 +104,23 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Intent intent = new Intent(this, WriteActivity.class);
         intent.putExtra("MEMO_INDEX", memoIndex);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_left, R.anim.no_change);
+    }
+
+    @Override
+    public void showItemCount(int itemCount) {
+        if (itemCount > 0) {
+            memoCountView.setText(getString(R.string.num_of_memo, itemCount));
+        } else {
+            memoCountView.setText("0개의 메모");
+        }
+
     }
 
     @OnClick(R.id.main_iv_write_new)
     void crateNewMemo() {
         showMemo(-1);
     }
+
+
 }

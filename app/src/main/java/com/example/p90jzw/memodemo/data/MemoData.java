@@ -10,13 +10,20 @@ public class MemoData extends RealmObject {
     private int index;
 
     private boolean checked = false;
+    private boolean showCheckBox = false;
     private boolean starred = false;
+
     private String header;
     private String text;
     private String editedTime;
 
     public String getEditedTime() {
         return editedTime;
+    }
+
+    public String getEditedTimePreview() {
+        String preview = editedTime.substring(0, 13);
+        return preview;
     }
 
     public String getText() {
@@ -57,6 +64,14 @@ public class MemoData extends RealmObject {
 
     public boolean isChecked() {
         return checked;
+    }
+
+    public boolean getShowCheckBox() {
+        return showCheckBox;
+    }
+
+    public void setShowCheckBox(boolean showCheckBox) {
+        this.showCheckBox = showCheckBox;
     }
 
     @NonNull

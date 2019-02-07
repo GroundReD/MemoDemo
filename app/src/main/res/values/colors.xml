@@ -6,9 +6,10 @@
     <color name="black">#000000</color>
     <color name="lightGrey">#757575</color>
     <color name="grey">#616161</color>
-    <color name="lightBluePrimary">#90caf9</color>
-    <color name="lightBlue">#c3fdff</color>
-    <color name="lightBlueDark">#5d99c6</color>
-    <color name="lightBlueOp80">#33c3fdff</color>
+    <color name="blueGrey">#8aacc8</color>
+    <color name="lightBluePrimary">#1976d2</color>
+    <color name="lightBlue">#63a4ff</color>
+    <color name="lightBlueDark">#004ba0</color>
+    <color name="lightBlueOp80">#2563a4ff</color>
 
 </resources>

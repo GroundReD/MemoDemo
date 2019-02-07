@@ -6,6 +6,8 @@ public interface MainContract {
 
     interface View {
         void showMemo(int memoIndex);
+
+        void showItemCount(int count);
     }
 
     interface Presenter {
@@ -14,6 +16,10 @@ public interface MainContract {
         void detachView();
 
         void loadItems(Context context);
+
+        void showItemCheckBox(Context context);
+
+        void deleteCheckedItem(Context context);
 
         void setMainAdapterModel(MainAdapterContract.Model adapterModel);
 
