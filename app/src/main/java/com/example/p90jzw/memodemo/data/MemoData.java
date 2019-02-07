@@ -1,5 +1,10 @@
 package com.example.p90jzw.memodemo.data;
 
+import com.example.p90jzw.memodemo.DataUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -11,7 +16,6 @@ public class MemoData extends RealmObject {
 
     private boolean checked = false;
     private boolean showCheckBox = false;
-    private boolean starred = false;
 
     private String header;
     private String text;
@@ -73,6 +77,7 @@ public class MemoData extends RealmObject {
     public void setShowCheckBox(boolean showCheckBox) {
         this.showCheckBox = showCheckBox;
     }
+
 
     @NonNull
     @Override

@@ -15,18 +15,12 @@ import android.widget.Toast;
 
 import com.example.p90jzw.memodemo.data.MemoData;
 
-import java.lang.reflect.Member;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
-public class WriteActivity extends AppCompatActivity {
+public class WriteActivity extends AppCompatActivity implements WriteContract.View {
 
     public final static int NEW = -1;
 
@@ -41,9 +35,10 @@ public class WriteActivity extends AppCompatActivity {
     ImageView writeNew;
 
     private String editedDate;
-    private Realm realm;
     private int memoIndex;
     private InputMethodManager imm;
+    private WritePresent writePresenter;
+    private MemoData writeMemoData;
 
 
     @Override
@@ -52,8 +47,7 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         ButterKnife.bind(this);
 
-
-        //set toolbar
+        // set toolbar
         memoToolbar = findViewById(R.id.memo_toolbar);
         setSupportActionBar(memoToolbar);
         if (getSupportActionBar() != null) {
@@ -62,16 +56,36 @@ public class WriteActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("메모");
         }
 
-        //get Realm instance
-        realm = Realm.getDefaultInstance();
+        // set Presenter
+        writePresenter = new WritePresent();
+        writePresenter.attachView(this);
 
         // two intent
         // - crate new memo = -1
         // - edit existed memo >= 0
         memoIndex = getIntent().getIntExtra("MEMO_INDEX", NEW);
+        initView();
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
+
+    private void initView() {
+        setMemoData();
+        memo.setText(writeMemoData.getHeader() != null ? writeMemoData.getAllText() : "");
+        date.setText(writeMemoData.getEditedTime());
+
+    }
+
+    private void setMemoData() {
+        // set memoData
+        if (memoIndex != NEW) {
+            writeMemoData = writePresenter.getExistedMemo(memoIndex);
+        } else {
+            writeMemoData = new MemoData();
+            writeMemoData.setIndex(DataUtils.getInstance().getAutoIncrementIndex(writeMemoData));
+        }
+        writeMemoData.setEditedTime(DataUtils.getInstance().saveEditedDate());
         Log.d("index", String.valueOf(memoIndex));
 
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     @Override
@@ -83,171 +97,74 @@ public class WriteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        saveMemo();
+        Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+        // back button 클릭 시 저장 + activity pop
+        // save button 클릭 시 저장만
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (memoIndex == NEW) {
-                    saveNewMemo(String.valueOf(memo.getText()));
-                } else {
-                    saveMemo(String.valueOf(memo.getText()));
-                }
-                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(R.anim.no_change, R.anim.slide_right);
                 return true;
             case R.id.save_memo:
-                if (memoIndex == NEW) {
-                    saveNewMemo(String.valueOf(memo.getText()));
-                } else {
-                    saveMemo(String.valueOf(memo.getText()));
-                }
-                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                 memo.clearFocus();
                 imm.hideSoftInputFromWindow(memo.getWindowToken(), 0);
-               return true;
+                return true;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveMemo(String memo) {
-        MemoData memoData = realm.where(MemoData.class).equalTo("index", memoIndex).findAll().get(0);
-
-        realm.beginTransaction();
-        String header = memo.substring(0, memo.indexOf("\n"));
-        String text = memo.substring(memo.indexOf("\n")).trim();
-        memoData.setEditedTime(editedDate);
-        memoData.setHeader(header);
-        memoData.setText(text);
-        realm.commitTransaction();
-    }
-
-
-    private void saveNewMemo(String memo) {
-        MemoData memoData = new MemoData();
-        int currentIndex = getAutoIncrementIndex(memoData);
-        Log.d("curIndex", String.valueOf(currentIndex));
-        memoData.setIndex(currentIndex);
-        memoData.setEditedTime(editedDate);
-
-        if (memo != null) {
-            if (memo.contains("\n")) {
-                String header = memo.substring(0, memo.indexOf("\n"));
-                String text = memo.substring(memo.indexOf("\n")).trim();
-                memoData.setHeader(header);
-                memoData.setText(text);
-            } else {
-                String header = memo;
-                String text = "";
-                memoData.setHeader(header);
-                memoData.setText(text);
-            }
-        } else if (memo.isEmpty()) {
-            return;
-        }
-
-        realm.beginTransaction();
-        realm.copyToRealm(memoData);
-        realm.commitTransaction();
-    }
-
-    private String saveEditedDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
-        return format.format(new Date());
-    }
-
-
-    private int getAutoIncrementIndex(Object object) {
-        int nextIndex;
-        Number currentIndex = null;
-
-        if (object instanceof MemoData) {
-            currentIndex = realm.where(MemoData.class).max("index");
-        }
-
-        if (currentIndex == null) {
-            nextIndex = 0;
-        } else {
-            nextIndex = currentIndex.intValue() + 1;
-        }
-        return nextIndex;
-    }
 
     @OnClick(R.id.write_iv_delete)
     void remove() {
-        Log.e("delIndex", String.valueOf(memoIndex));
-        RealmResults<MemoData> results = realm.where(MemoData.class).equalTo("index", memoIndex).findAll();
-
-        if (results.isEmpty()) {
-            finish();
-            return;
+        if (memoIndex != NEW) {
+            writePresenter.deleteMemo(memoIndex);
         }
-        realm.beginTransaction();
-        results.deleteAllFromRealm();
-        realm.commitTransaction();
-
         finish();
+        overridePendingTransition(R.anim.no_change, R.anim.slide_right);
 
     }
 
     @OnClick(R.id.write_iv_write_new)
     void createNewMemo() {
-        if (memoIndex != NEW) {
-            saveMemo(String.valueOf(memo.getText()));
-        } else {
-            saveNewMemo(String.valueOf(memo.getText()));
-        }
-
+        saveMemo();
         //new writeActivity
         Intent intent = new Intent(this, WriteActivity.class);
         intent.putExtra("MEMO_INDEX", -1);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-    }
-
-    void setCurrentIndex() {
-
-    }
-
-    void showExistedMemo(int memoIndex) {
-        RealmResults<MemoData> results = realm.where(MemoData.class).equalTo("index", memoIndex).findAll();
-        memo.setText(results.get(0) != null ? results.get(0).getAllText() : "");
-        date.setText(results.get(0) != null ? results.get(0).getEditedTime() : "yyyy-MM-dd");
-    }
-
-    void showEmptyMemo() {
-        memo.setText("");
-        date.setText(editedDate);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close();
+        writePresenter.detachView();
     }
 
     @Override
     public void onBackPressed() {
-        if (memoIndex != NEW) {
-            saveMemo(String.valueOf(memo.getText()));
-        } else {
-            saveNewMemo(String.valueOf(memo.getText()));
-        }
-
+        saveMemo();
         finish();
+        overridePendingTransition(R.anim.no_change, R.anim.slide_right);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("new memo index ", String.valueOf(memoIndex));
-        editedDate = saveEditedDate();
+    public void saveMemo() {
         if (memoIndex != NEW) {
-            showExistedMemo(memoIndex);
+            // 비었으면 삭제
+            if (String.valueOf(memo.getText()).equals("")) {
+                writePresenter.deleteMemo(memoIndex);
+            } else {
+                writePresenter.editExistedMemo(writeMemoData, String.valueOf(memo.getText()));
+            }
         } else {
-            showEmptyMemo();
+            // 비었으면 저장 안함
+            if (String.valueOf(memo.getText()).equals("")) {
+                return;
+            }
+            writePresenter.saveNewMemo(writeMemoData, String.valueOf(memo.getText()));
         }
     }
-
-
 }

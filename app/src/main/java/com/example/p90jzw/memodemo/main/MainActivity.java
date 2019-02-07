@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @BindView(R.id.main_tv_number_of_memo)
     TextView memoCountView;
 
-
     private MainAdapter mAdapter;
     private MainPresenter mainPresenter;
 
