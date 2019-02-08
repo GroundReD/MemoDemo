@@ -11,5 +11,6 @@
     <color name="lightBlue">#63a4ff</color>
     <color name="lightBlueDark">#004ba0</color>
     <color name="lightBlueOp80">#2563a4ff</color>
+    <color name="lightBlueOp40">#4063a4ff</color>
 
 </resources>

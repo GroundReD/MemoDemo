@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.example.p90jzw.memodemo.R;
 import com.example.p90jzw.memodemo.data.MemoData;
 import com.example.p90jzw.memodemo.holder.MainContentViewHolder;
+import com.example.p90jzw.memodemo.holder.MainContentsCardViewHolder;
 import com.example.p90jzw.memodemo.listener.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -16,29 +17,40 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> implements MainAdapterContract.Model, MainAdapterContract.View {
-    public static final int VIEW_TYPE_HEADER = 0;
-    public static final int VIEW_TYPE_CONTENT = 1;
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MainAdapterContract.Model, MainAdapterContract.View {
 
     private Context mContext;
     private List<MemoData> memoDataList;
     private OnItemClickListener onItemClickListener;
+    private boolean isGridView;
 
     public MainAdapter(Context mContext) {
         this.mContext = mContext;
+        isGridView = false;
+    }
+
+    public void setGridView(boolean gridView) {
+        isGridView = gridView;
     }
 
     @NonNull
     @Override
-    public MainContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_row, parent, false);
-        return new MainContentViewHolder(view, mContext, onItemClickListener);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(isGridView? R.layout.item_text_card:R.layout.item_text_row, parent, false);
+        return isGridView ? new MainContentsCardViewHolder(view, mContext,onItemClickListener) :new MainContentViewHolder(view, mContext, onItemClickListener);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainContentViewHolder holder, int position) {
-        holder.bind(memoDataList.get(position), position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(!isGridView) {
+            MainContentViewHolder listViewHolder = (MainContentViewHolder) holder;
+            listViewHolder.bind(mContext, memoDataList.get(position), position);
+        } else {
+            MainContentsCardViewHolder cardViewHolder= (MainContentsCardViewHolder) holder;
+            cardViewHolder.bind(mContext,memoDataList.get(position),position);
+        }
+
     }
 
 
@@ -59,8 +71,19 @@ public class MainAdapter extends RecyclerView.Adapter<MainContentViewHolder> imp
     }
 
     @Override
+    public void notifyAdapterItem(int position) {
+        notifyItemChanged(position);
+    }
+
+    @Override
     public void updateMemo(ArrayList<MemoData> memoDataItems) {
         memoDataList = memoDataItems;
+    }
+
+    @Override
+    public void updateMemoItem(MemoData memoData, int position) {
+        memoDataList.set(position,memoData);
+
     }
 
     @Override

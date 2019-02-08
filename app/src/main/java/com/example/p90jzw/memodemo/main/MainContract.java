@@ -17,9 +17,11 @@ public interface MainContract {
 
         void loadItems();
 
-        void showItemCheckBox(boolean showCheckbox);
+        void showItemCheckBox();
 
-        void deleteCheckedItem(Context context);
+        void deleteCheckedItems();
+
+        void cancelCheckItems();
 
         void setMainAdapterModel(MainAdapterContract.Model adapterModel);
 

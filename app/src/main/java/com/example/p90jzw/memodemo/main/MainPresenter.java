@@ -16,7 +16,7 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
     private MainContract.View view;
     private MainAdapterContract.View adapterView;
     private MainAdapterContract.Model adapterModel;
-    Realm realm;
+    private Realm realm;
 
     @Override
     public void attachView(MainContract.View view) {
@@ -48,7 +48,7 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
     }
 
     @Override
-    public void showItemCheckBox(boolean showCheckBox) {
+    public void showItemCheckBox() {
         ArrayList<MemoData> memoDataList = new ArrayList<>();
         try {
             RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
@@ -59,7 +59,7 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
         }
 
         for (MemoData memoData : memoDataList) {
-            memoData.setShowCheckBox(showCheckBox);
+            memoData.setShowCheckBox(true);
         }
 
         adapterModel.updateMemo(memoDataList);
@@ -68,8 +68,57 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
     }
 
     @Override
-    public void deleteCheckedItem(Context context) {
+    public void deleteCheckedItems() {
+        ArrayList<MemoData> memoDataList = new ArrayList<>();
+        try {
+            RealmResults<MemoData> removeResult = realm.where(MemoData.class).equalTo("checked",true).findAll();
 
+            realm.beginTransaction();
+            removeResult.deleteAllFromRealm();
+            realm.commitTransaction();
+
+            RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
+            realm.beginTransaction();
+            for (MemoData memo :
+                    results) {
+                memo.setShowCheckBox(false);
+                memo.setChecked(false);
+            }
+            realm.commitTransaction();
+
+            memoDataList.addAll(realm.copyFromRealm(results));
+
+        } catch (Exception e) {
+            Log.e("delete items", e.getMessage());
+        }
+
+        for (MemoData memoData : memoDataList) {
+            memoData.setShowCheckBox(false);
+        }
+
+        adapterModel.updateMemo(memoDataList);
+        adapterView.notifyAdapter();
+        view.showItemCount(memoDataList.size());
+    }
+
+    @Override
+    public void cancelCheckItems() {
+        ArrayList<MemoData> memoDataList = new ArrayList<>();
+        try {
+            RealmResults<MemoData> results = realm.where(MemoData.class).findAll();
+            realm.beginTransaction();
+            for (MemoData memo:results) {
+                memo.setChecked(false);
+                memo.setShowCheckBox(false);
+            }
+            realm.commitTransaction();
+            memoDataList.addAll(realm.copyFromRealm(results));
+        } catch (Exception e) {
+            Log.e("cancel check", e.getMessage());
+        }
+
+        adapterModel.updateMemo(memoDataList);
+        adapterView.notifyAdapter();
     }
 
 
@@ -88,5 +137,21 @@ public class MainPresenter implements MainContract.Presenter, OnItemClickListene
     public void onItemClick(int position) {
         MemoData memoData = adapterModel.getItem(position);
         view.showMemo(memoData.getIndex());
+    }
+
+    @Override
+    public void onItemCheckClick(int position) {
+        MemoData memoData = adapterModel.getItem(position);
+
+        boolean currentCheck = memoData.isChecked();
+        memoData.setChecked(!currentCheck);
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(memoData);
+        realm.commitTransaction();
+
+        adapterModel.updateMemoItem(memoData, position);
+        adapterView.notifyAdapterItem(position);
+
     }
 }

@@ -10,10 +10,14 @@ public interface MainAdapterContract {
         void setOnItemClickListener(OnItemClickListener clickListener);
 
         void notifyAdapter();
+
+        void notifyAdapterItem(int position);
     }
 
     interface Model {
         void updateMemo(ArrayList<MemoData> memoDataItems);
+
+        void updateMemoItem(MemoData memoData, int position);
 
         void clearItem();
 
