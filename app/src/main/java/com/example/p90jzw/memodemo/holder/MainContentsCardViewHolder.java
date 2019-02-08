@@ -51,9 +51,9 @@ public class MainContentsCardViewHolder extends RecyclerView.ViewHolder {
         textContent.setText(memoData.getText());
 
         if (memoData.isChecked()) {
-            itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.lightBlueOp40));
+            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.roundred_rec_blue_grey_filled));
         } else {
-            itemView.setBackgroundColor(Color.TRANSPARENT);
+            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.roundred_rec_blue_grey));
         }
     }
 }
