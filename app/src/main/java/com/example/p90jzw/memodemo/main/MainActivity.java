@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +23,10 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
-    public final static boolean EDIT = true;
-    public final static boolean CANCEL = false;
+    public final static int EDIT = 0;
+    public final static int CANCEL = 1;
+    public final static int SEARCH = 2;
+    public final static int SEARCH_CANCEL = 4;
 
     @BindView(R.id.main_recycler_view)
     RecyclerView mRecyclerView;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private MainAdapter mAdapter;
     private MainPresenter mainPresenter;
-    private boolean mode;
+    private int mode;
     private boolean isGridView = false;
 
     @Override
@@ -85,12 +88,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         invalidateOptionsMenu();
-        if (mode == EDIT) {
-            menu.findItem(R.id.cancel).setVisible(true);
-            menu.findItem(R.id.edit_memo).setVisible(false);
-        } else {
-            menu.findItem(R.id.cancel).setVisible(false);
-            menu.findItem(R.id.edit_memo).setVisible(true);
+        switch (mode) {
+            case EDIT:
+                menu.findItem(R.id.cancel).setVisible(true);
+                menu.findItem(R.id.edit_memo).setVisible(false);
+                break;
+            case CANCEL:
+                menu.findItem(R.id.cancel).setVisible(false);
+                menu.findItem(R.id.edit_memo).setVisible(true);
+            case SEARCH:
+                menu.findItem(R.id.cancel).setVisible(false);
+                menu.findItem(R.id.edit_memo).setVisible(false);
+                menu.findItem(R.id.search_memo).setVisible(false);
+                menu.findItem(R.id.my_search_bar).setVisible(true);
+                menu.findItem(R.id.search_cancel).setVisible(true);
+                break;
+            case SEARCH_CANCEL:
+                menu.findItem(R.id.cancel).setVisible(true);
+                menu.findItem(R.id.edit_memo).setVisible(true);
+                menu.findItem(R.id.search_memo).setVisible(true);
+                menu.findItem(R.id.my_search_bar).setVisible(false);
+                menu.findItem(R.id.search_cancel).setVisible(false);
+                break;
+
+                default:
+                    break;
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -112,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 memoWrite.setVisibility(View.VISIBLE);
                 return true;
             case R.id.search_memo:
+                mode = SEARCH;
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+
+            case R.id.search_cancel:
+                mode=SEARCH_CANCEL;
+                break;
+
+                default:
+                    break;
         }
         return super.onOptionsItemSelected(item);
     }

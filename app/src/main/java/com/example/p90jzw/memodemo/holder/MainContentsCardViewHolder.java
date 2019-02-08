@@ -1,9 +1,7 @@
 package com.example.p90jzw.memodemo.holder;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.p90jzw.memodemo.R;
@@ -51,9 +49,9 @@ public class MainContentsCardViewHolder extends RecyclerView.ViewHolder {
         textContent.setText(memoData.getText());
 
         if (memoData.isChecked()) {
-            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.roundred_rec_blue_grey_filled));
+            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.rounded_rec_blue_grey_filled));
         } else {
-            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.roundred_rec_blue_grey));
+            itemView.setBackground(ContextCompat.getDrawable(context,R.drawable.rounded_rec_blue_grey));
         }
     }
 }

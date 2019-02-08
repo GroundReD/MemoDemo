@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/search_memo"
-        android:title="search"
-        android:icon="@drawable/magnifier"
+
+    <item
+        android:id="@+id/my_search_bar"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"
-        />
+        android:title="searchBar"
+        android:visible="false"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/search_memo"
+        android:icon="@drawable/magnifier"
+        android:orderInCategory="2"
+        android:title="search"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/edit_memo"
+        android:orderInCategory="3"
         android:title="@string/edit"
-        android:orderInCategory="2"
-        app:showAsAction="ifRoom|collapseActionView"
-        />
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/cancel"
+        android:orderInCategory="4"
         android:title="@string/cancel"
-        android:orderInCategory="3"
         android:visible="false"
-        app:showAsAction="ifRoom|collapseActionView"
-        />
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/search_cancel"
+        android:orderInCategory="5"
+        android:title="@string/cancel"
+        android:visible="false"
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>
